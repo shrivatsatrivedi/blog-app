@@ -1,22 +1,93 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
-const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 const User = require('./models/User');
+const bcrypt = require('bcryptjs');
 const app = express();
+const jwt = require('jsonwebtoken');
 
-app.use(cors());
+const salt = bcrypt.genSaltSync(10);
+const secret = 'sfdhgstedjhjsrtyfgsg45hst';
+// CORS configuration to allow requests from frontend origin
+const corsOptions = {
+    origin: 'http://localhost:3000', // Adjust this to match your frontend origin
+    methods: ['GET', 'POST'], // Specify allowed HTTP methods
+    allowedHeaders: ['Content-Type'], // Specify allowed headers
+    credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
- mongoose.connect('mongodb+srv://blog:<g7foOcIPt8zIC3gt>@cluster0.u2j3s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+// Connect to MongoDB using the correct connection URI
+mongoose.connect('mongodb+srv://user:cPFdhWLmrcYmZxMd@cluster0.jzwsk.mongodb.net/mern-blog?retryWrites=true&w=majority&appName=Cluster0', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(error => console.error('MongoDB connection error:', error));
 
-app.post('/register', async(req, res) => {
-    const{Username,Password} = req.body;
-  const userDoc = await User.create({Username,Password});
-    res.json(userDoc);
-    
+// Define a root route for the homepage
+app.get('/', (req, res) => {
+    res.send(`
+        <html>
+            <head>
+                <title>My Blog App</title>
+            </head>
+            <body>
+                <h1>Welcome to My Blog App</h1>
+                <p>This is the homepage of my MERN blog application.</p>
+                <p>Use /register to register a new user.</p>
+            </body>
+        </html>
+    `);
 });
 
-app.listen(4000);
-//mongodb+srv://blog:<taCdbvTsDh0GLGc>@cluster0.u2j3s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-//mongodb+srv://blog:<taCdbvTsDh0GLGc>@cluster0.u2j3s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+// Define the register route
+app.post('/register', async (req, res) => {
+    const { Username, Password } = req.body;
+    try {
+        const userDoc = await User.create({ Username, Password:bcrypt.hashSync(Password,salt),});
+        res.json(userDoc);
+    } catch (error) {
+        console.error('Error creating user:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+   
+});
+
+app.post('/login', async (req, res) => {
+  const { Username, Password } = req.body;
+
+  try {
+      // Find the user in the database
+      const userDoc = await User.findOne({ Username });
+
+      // If user is not found, return an error response
+      if (!userDoc) {
+          return res.status(400).json({ message: 'User not found' });
+      }
+
+      // Compare the password using bcrypt
+      const passok = bcrypt.compareSync(Password, userDoc.Password);
+
+      if (!passok) {
+          return res.status(400).json({ message: 'Incorrect password' });
+      }
+
+     jwt.sign({Username,id:userDoc. id}, secret, {}, (err,token) => {
+             if(err) throw err;  
+             res.json(token);
+               });
+
+  } catch (error) {
+      // Handle any other errors
+      console.error(error);
+      res.status(500).json({ message: 'An error occurred during login' });
+  }
+});
+
+// Start the server
+app.listen(4000, () => {
+    console.log('Server is running on http://localhost:4000');
+});
