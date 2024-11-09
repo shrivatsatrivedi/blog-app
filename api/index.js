@@ -91,13 +91,23 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.get('/profile', (req,res)=> {
-    const {token} = req.cookies;
-    jwt.verify(token, secret,{}, (err,info) =>{
-       if(err) throw err;
-       res.json(info);
+app.get('/profile', (req, res) => {
+    const token = req.cookies.token;
+    
+    // Check if the token is missing
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized: No token provided' });
+    }
+    
+    // Verify the token if it exists
+    jwt.verify(token, secret, {}, (err, info) => {
+        if (err) {
+            return res.status(403).json({ message: 'Invalid token' });
+        }
+        res.json(info); // Send back user info if verification is successful
     });
 });
+
 
 app.post('/logout',(req,res) =>{
     res.cookie('token', '').json('ok');
