@@ -1,17 +1,19 @@
-export default function Post() {
+import {format} from "date-fns";
+
+export default function Post({title, summary, cover, content, createdAt,author}) {
   return (
      <div className="container">
         <div className="post">
            <div className="image">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjTqvnJhgD4IUxQiT8zGPHpsT2C70NdYpwaw&s" alt=""/>
+              <img src={'http://localhost:4000/'+cover} alt=""/>
            </div>
            <div className="text">
-              <h2>How to Use ChatGPT in Daily Life?</h2>
+              <h2>{title}</h2>
               <p className="info">
-                 <a className="author">Shrivatsa Trivedi</a>
-                 <time>2023-01-06 16:45</time>
+                 <a className="author">{author.Username}</a>
+                 <time>{format(new Date(createdAt), 'MMM d, yyyy  HH:mm')}</time>
               </p>
-              <p className="summary">This blog post will walk you through how to use ChatGPT with 8 different scenarios.</p>
+              <p className="summary">{summary}</p>
            </div>
         </div>
      </div>

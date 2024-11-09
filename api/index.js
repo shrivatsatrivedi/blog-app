@@ -2,10 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const Post = require('./models/Post');
 const bcrypt = require('bcryptjs');
 const app = express();
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const multer =  require('multer');
+const uploadMiddleware = multer({dest: 'uploads/'});
+const fs = require('fs');
+const path = require('path');
 const salt = bcrypt.genSaltSync(10);
 const secret = 'sfdhgstedjhjsrtyfgsg45hst';
 // CORS configuration to allow requests from frontend origin
@@ -16,9 +21,10 @@ const corsOptions = {
     credentials: true
 };
 
-app.use(cors({credentials:true, origin:'http://localhost:3000'}));
+app.use(cors({credentials:true, origin:'http://localhost:3000', credentials: true,}));
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static(__dirname+'/uploads'));
 
 // Connect to MongoDB using the correct connection URI
 mongoose.connect('mongodb+srv://user:cPFdhWLmrcYmZxMd@cluster0.jzwsk.mongodb.net/mern-blog?retryWrites=true&w=majority&appName=Cluster0', {
@@ -111,7 +117,45 @@ app.get('/profile', (req, res) => {
 
 app.post('/logout',(req,res) =>{
     res.cookie('token', '').json('ok');
-})
+});
+
+
+app.post('/post', uploadMiddleware.single('file'), async(req, res) => {
+    const { originalname, path: oldPath } = req.file; // req.file.path is the temp path
+    const parts = originalname.split('.');
+    const ext = parts[parts.length - 1];
+    const newPath = `${oldPath}.${ext}`; // Append the file extension to the old path
+// Rename the uploaded file to include the correct extension
+    fs.renameSync(oldPath, newPath);
+const{token} = req.cookies;
+jwt.verify(token , secret , {} , async(err,info) => {
+    if(err) throw err;
+    const{title,summary,content} = req.body;
+    const postDoc =  await Post.create({
+            title,
+            summary,
+            content,
+            cover:newPath,
+             author: info.id,
+    });
+    res.json(postDoc);
+    
+});
+
+
+     
+    
+});
+
+app.get('/post', async (req, res) => {
+   
+        const posts = await Post.find()
+        .populate('author', ['Username'])
+        .sort({createdAt: -1})
+        .limit(20); // Sort by latest created
+        res.json(posts); // Send posts as JSON response
+    
+});
 
 // Start the server
 app.listen(4000, () => {
