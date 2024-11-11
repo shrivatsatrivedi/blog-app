@@ -3,42 +3,44 @@ import { Link } from 'react-router-dom';
 import { UserContext } from './UserContext';
 
 export default function Header() {
-    const {setUserInfo, userInfo} = useContext(UserContext);
+    const { setUserInfo, userInfo } = useContext(UserContext);
+
     useEffect(() => {
         fetch('http://localhost:4000/profile', {
-                    credentials: 'include',
-                }).then(response =>{
-                  response.json().then(userInfo => {
-                    setUserInfo(userInfo);
-                  });
-                });
-    }, []); // Empty array means this only runs once on mount
+            credentials: 'include',
+        }).then(response => {
+            response.json().then(userInfo => {
+                setUserInfo(userInfo);
+            });
+        });
+    }, []);
 
-    function logout(){
-           fetch('http://localhost:4000/logout',{
-   credentials : 'include',
-   method : 'POST',
-           });
-           setUserInfo(null);
+    function logout() {
+        fetch('http://localhost:4000/logout', {
+            credentials: 'include',
+            method: 'POST',
+        });
+        setUserInfo(null);
     }
 
-     const Username = userInfo?.Username;
+    const Username = userInfo?.Username;
+
     return (
         <header>
-            <Link to="/" className="logo">MyBlog</Link>
+            <Link to="/" className="logo">Home Page</Link>
+            <h1 className="blog-title">Trivedi Blog's</h1>
             <nav>
-               {Username && (
-                <>
-               <Link to="/create">Create new post</Link>
-                <a onClick={logout}>Logout</a>
-                </>
-               )}
-               {!Username && (
-                <>
-                 <Link to="/login">Login</Link>
-                 <Link to="/register">Register</Link>
-                </>
-               )}
+                {Username ? (
+                    <>
+                        <Link to="/create">Create new post</Link>
+                        <a onClick={logout}>Logout</a>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/login">Login</Link>
+                        <Link to="/register">Register</Link>
+                    </>
+                )}
             </nav>
         </header>
     );
