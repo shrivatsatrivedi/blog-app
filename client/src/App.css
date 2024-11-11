@@ -74,6 +74,11 @@ div.post div.text h2 {
   font-size: 1.8rem;
 }
 
+div.post div.texts a{
+   text-decoration: none;
+   color: inherit;
+}
+
 div.post p.info {
   margin: 0;
   color: #888;
@@ -119,4 +124,82 @@ button {
 
 form.login h1 , form.register h1{
   text-align: center;
+}
+
+.post-page {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: #333;
+  font-family: Arial, sans-serif;
+}
+
+.post-page .image {
+  width: 100%;
+  max-height: 400px;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.post-page .image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.post-page .image img:hover {
+  transform: scale(1.05);
+}
+
+.post-page h1 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 10px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.post-page h1::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background-color: #555;
+  margin: 10px auto;
+}
+
+.post-page .content {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #555;
+}
+
+.post-page .content p {
+  margin-bottom: 1.2rem;
+}
+
+.post-page .content strong {
+  color: #222;
+  font-weight: bold;
+}
+
+.post-page .content em {
+  font-style: italic;
+  color: #666;
+}
+
+.post-page .content a {
+  color: #007acc;
+  text-decoration: none;
+}
+
+.post-page .content a:hover {
+  text-decoration: underline;
 }

@@ -157,6 +157,12 @@ app.get('/post', async (req, res) => {
     
 });
 
+
+app.get('/post/:id' , async(req,res) =>{
+    const {id} = req.params;
+   const postDoc =await Post.findById(id).populate('author' , ['Username']);
+   res.json(postDoc);
+})
 // Start the server
 app.listen(4000, () => {
     console.log('Server is running on http://localhost:4000');
