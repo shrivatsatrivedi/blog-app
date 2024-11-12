@@ -169,8 +169,6 @@ API Endpoints
 - CSS for styling
 - Fetch API for HTTP requests
 
-## License
-MIT License 
-
+ 
 ## Contact
-+91 7045103001 
+shrivatsatrivedi@gmail.com
