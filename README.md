@@ -17,7 +17,6 @@ A full-stack blog application built using the MERN (MongoDB, Express.js, React.j
   - [Authentication](#authentication)
   - [Posts](#posts)
 - [Technologies Used](#technologies-used)
-- [License](#license)
 - [Contact](#contact)
 
 ## Introduction
