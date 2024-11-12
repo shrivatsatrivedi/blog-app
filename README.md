@@ -132,7 +132,7 @@ your-project/
 
 ```
 
-##API Endpoints
+API Endpoints
 
 ### Authentication
 - POST /register - Register a new user
