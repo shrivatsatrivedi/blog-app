@@ -15,7 +15,7 @@ const salt = bcrypt.genSaltSync(10);
 const secret = 'sfdhgstedjhjsrtyfgsg45hst';
 // CORS configuration to allow requests from frontend origin
 const corsOptions = {
-    origin: 'http://localhost:3000', // Adjust this to match your frontend origin
+    origin: '*', // Adjust this to match your frontend origin
     methods: ['GET', 'POST'], // Specify allowed HTTP methods
     allowedHeaders: ['Content-Type'], // Specify allowed headers
     credentials: true
