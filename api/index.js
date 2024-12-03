@@ -206,7 +206,7 @@ app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
             if (err) {
                 return res.status(403).json({ message: 'Invalid or expired token' });
             }
-
+            console.log('JWT verified:', info);
             const { id, title, summary, content } = req.body;
 
             if (!id || !title || !summary || !content) {
