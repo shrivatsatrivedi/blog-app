@@ -42,7 +42,7 @@ export default function CreatePost() {
   }
 
   try {
-      const response = await fetch('blog-app-silk-gamma.vercel.app/post', {
+      const response = await fetch('https://blog-app-silk-gamma.vercel.app/post', {
           method: 'POST',
           body: data,
           credentials: 'include',

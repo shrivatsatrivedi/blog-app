@@ -10,7 +10,7 @@ export default function PostPage() {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`blog-app-silk-gamma.vercel.app/post/${id}`, {
+    fetch(`https://blog-app-silk-gamma.vercel.app/post/${id}`, {
       method: 'GET',
       credentials: 'include'
     })
