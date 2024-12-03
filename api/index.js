@@ -17,7 +17,7 @@ const secret = 'sfdhgstedjhjsrtyfgsg45hst'; // Consider storing this securely us
 
 // CORS Configuration
 app.use(cors({
-    origin: 'http://localhost:3000', // Adjust this to match your frontend origin
+    origin: 'https://trivedi-blog-app.vercel.app', // Adjust this to match your frontend origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type'],
     credentials: true,
