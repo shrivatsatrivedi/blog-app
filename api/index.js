@@ -332,7 +332,6 @@ app.get('/post/:id/image', async (req, res) => {
 });
 
 // Start the Server
-const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on blog-app-silk-gamma.vercel.app`);
 });
