@@ -331,7 +331,4 @@ app.get('/post/:id/image', async (req, res) => {
     }
 });
 
-// Start the Server
-app.listen(PORT, () => {
-    console.log(`Server is running on blog-app-silk-gamma.vercel.app`);
-});
+console.log(`Server is running on blog-app-silk-gamma.vercel.app`);
